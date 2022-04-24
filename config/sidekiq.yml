@@ -1,0 +1,14 @@
+---
+production:
+  :concurrency: 20
+development:
+  :concurrency: 1
+test:
+  :concurrency: 1
+
+:queues:
+  - default
+  
+:schedule:
+  GetAiSuggestionsWorker:
+    cron: "0 0 * * *" # Every day at midnight
