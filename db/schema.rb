@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2023_10_31_072018) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index "lower((name)::text)", name: "brands_name_unique_idx", unique: true
   end
 
   create_table "car_suggestions", force: :cascade do |t|
@@ -27,6 +28,7 @@ ActiveRecord::Schema.define(version: 2023_10_31_072018) do
     t.float "rank_score"
     t.integer "label"
     t.index ["car_id"], name: "index_car_suggestions_on_car_id"
+    t.index ["label"], name: "index_car_suggestions_on_label"
     t.index ["rank_score"], name: "index_car_suggestions_on_rank_score"
     t.index ["user_id", "car_id"], name: "car_suggestions_unique_idx", unique: true
   end
@@ -38,6 +40,7 @@ ActiveRecord::Schema.define(version: 2023_10_31_072018) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["brand_id"], name: "index_cars_on_brand_id"
+    t.index ["price"], name: "index_cars_on_price"
     t.check_constraint "price > (0)::numeric", name: "cars_positive_price"
   end
 
@@ -48,16 +51,6 @@ ActiveRecord::Schema.define(version: 2023_10_31_072018) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["brand_id"], name: "index_user_preferred_brands_on_brand_id"
     t.index ["user_id", "brand_id"], name: "index_user_preferred_brands_on_user_id_and_brand_id", unique: true
-  end
-
-  create_table "user_recommended_cars", force: :cascade do |t|
-    t.bigint "car_id", null: false
-    t.bigint "user_id", null: false
-    t.float "rank_score", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["car_id"], name: "index_user_recommended_cars_on_car_id"
-    t.index ["user_id"], name: "index_user_recommended_cars_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -73,6 +66,4 @@ ActiveRecord::Schema.define(version: 2023_10_31_072018) do
   add_foreign_key "cars", "brands"
   add_foreign_key "user_preferred_brands", "brands"
   add_foreign_key "user_preferred_brands", "users"
-  add_foreign_key "user_recommended_cars", "cars", on_delete: :cascade
-  add_foreign_key "user_recommended_cars", "users", on_delete: :cascade
 end
