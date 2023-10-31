@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class GetUserSuggestionsWorker
+class RefreshUserSuggestionsWorker
   include Sidekiq::Worker
 
   sidekiq_options lock: :until_executed, on_confict: :log
@@ -17,5 +17,6 @@ class GetUserSuggestionsWorker
 
   def perform(user_id)
     AiRecommendations.new(user_id).call
+    ReadModels::RefreshCarSuggestions.new(user_id).call
   end
 end

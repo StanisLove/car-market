@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_30_210955) do
+ActiveRecord::Schema.define(version: 2023_10_31_072018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,16 @@ ActiveRecord::Schema.define(version: 2023_10_30_210955) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "car_suggestions", force: :cascade do |t|
+    t.bigint "car_id", null: false
+    t.bigint "user_id", null: false
+    t.float "rank_score"
+    t.integer "label"
+    t.index ["car_id"], name: "index_car_suggestions_on_car_id"
+    t.index ["rank_score"], name: "index_car_suggestions_on_rank_score"
+    t.index ["user_id", "car_id"], name: "car_suggestions_unique_idx", unique: true
   end
 
   create_table "cars", force: :cascade do |t|
@@ -58,6 +68,8 @@ ActiveRecord::Schema.define(version: 2023_10_30_210955) do
     t.index "TRIM(BOTH FROM lower((email)::text))", name: "users_email_unique_idx", unique: true
   end
 
+  add_foreign_key "car_suggestions", "cars", on_delete: :cascade
+  add_foreign_key "car_suggestions", "users", on_delete: :cascade
   add_foreign_key "cars", "brands"
   add_foreign_key "user_preferred_brands", "brands"
   add_foreign_key "user_preferred_brands", "users"
