@@ -1,0 +1,82 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/suggestions":
+    get:
+      summary: Get car suggestions
+      tags:
+      - Cars
+      parameters:
+      - name: user_id
+        in: query
+        description: user id
+        required: true
+      - name: query
+        in: query
+        description: car brand name or part of car brand name to filter by
+        required: false
+      - name: price_min
+        in: query
+        description: minimum price
+        required: false
+      - name: price_max
+        in: query
+        description: minimum price
+        required: false
+      - name: page
+        in: query
+        description: page number
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    price:
+                      type: float
+                    rank_score:
+                      type: float
+                      nullable: true
+                    model:
+                      type: string
+                    label:
+                      type: string
+                      enum:
+                      - perfect_match
+                      - good_match
+                      - 
+                      nullable: true
+                    brand:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                      required:
+                      - id
+                      - name
+                      additionalProperties: false
+                  required:
+                  - id
+                  - price
+                  - rank_score
+                  - model
+                  - label
+                  - brand
+                  additionalProperties: false
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000

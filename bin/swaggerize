@@ -1,0 +1,4 @@
+#!/bin/bash
+RAILS_ENV=test \
+RSPEC_WITHOUT_DB_CONNECTION=1 \
+rake rswag:specs:swaggerize

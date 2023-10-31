@@ -62,3 +62,6 @@ provision:
   - dip compose down --volumes || true
   - dip compose up -d postgres
   - dip bash -c bin/setup
+  - dip RAILS_ENV=test rails db:create
+  - dip RAILS_ENV=test rails db:migrate
+  - dip bash -c bin/swaggerize
