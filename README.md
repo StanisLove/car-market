@@ -1,3 +1,11 @@
+# Start development environment
+
+```bash
+dip provision && dip rails s
+```
+
+Swagger documentation: http://localhost:3000/api-docs/index.html
+
 # Introduction
 
 We want to build a car market platform and provide a personalized selection of cars to our users. There are few main models:
